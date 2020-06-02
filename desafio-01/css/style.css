@@ -1,0 +1,51 @@
+header {
+  text-align: center;
+}
+
+h4 {
+  margin: 0.912rem 0;
+}
+
+#form-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.col.s5 {
+  border: #c3c3c3 solid 1px;
+  border-radius: 4px;
+  margin: auto;
+  margin-top: 0;
+}
+
+.col.s1,
+.col.s10 {
+  margin-left: 0 !important;
+}
+
+#results {
+  display: flex;
+  justify-content: space-between;
+}
+
+#loader {
+  display: flex;
+  margin: auto;
+}
+
+#content {
+  display: none;
+}
+
+img {
+  border-radius: 100%;
+}
+
+.user-container {
+  margin-bottom: 10px;
+}
+
+p {
+  margin-bottom: 10px;
+}

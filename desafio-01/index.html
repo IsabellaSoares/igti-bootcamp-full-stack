@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Desafio 01 - Pesquisa de Usuários</title>
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h3>Pesquisa de Usuários</h3>
+    </header>
+    <div id="loader" class="preloader-wrapper big active">
+      <div class="spinner-layer spinner-blue-only">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="row">
+        <form class="col s12">
+          <div class="row" id="form-content">
+            <div class="input-field col s10">
+              <input id="search" name="search" type="text" />
+              <label for="search">Buscar</label>
+            </div>
+            <div class="col s1">
+              <button
+                id="search-btn"
+                class="waves-effect waves-light btn"
+                disabled="true"
+              >
+                Buscar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="row" id="results">
+        <div class="col s5">
+          <h4 id="filtered-list-title">Nenhum usuário filtrado</h4>
+          <div id="filtered-list"></div>
+        </div>
+        <div id="statistics" class="col s5">
+          <h4 id="statistics-title">Nada a ser exibido</h4>
+          <div id="statistics-container"></div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="./js/script.js"></script>
+  </body>
+</html>
