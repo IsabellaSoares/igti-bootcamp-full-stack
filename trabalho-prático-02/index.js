@@ -5,6 +5,7 @@ const exists = promisify(fs.exists);
 const appendFile = promisify(fs.appendFile);
 const writeFile = promisify(fs.writeFile);
 const readFile = promisify(fs.readFile);
+const readFileSync = promisify(fs.readFileSync);
 
 async function main() {
   await createFiles();
@@ -26,23 +27,18 @@ const createFiles = async () => {
         );
 
         states.map(async (state) => {
-          await writeFile(`./files/${state.Sigla}.json`, '[').then(async () => {
-            let string = '';
+          await writeFile(`./files/${state.Sigla}.json`, '').then(async () => {
+            let array = [];
+
             cities.map((city) => {
               if (city.Estado === state.ID) {
-                string += `${JSON.stringify(city)}`;
-                //  await appendFile(
-                //   `./files/${state.Sigla}.json`,
-                //   `${JSON.stringify(city)},\n`
-                // );
+                array.push(city);
               }
             });
-            let editedText = string.slice(0, -2);
-            editedText += ']';
-            // console.log(editedText);
+
             await appendFile(
               `./files/${state.Sigla}.json`,
-              JSON.parse(editedText)
+              JSON.stringify(array, null, 2)
             );
           });
         });
@@ -55,10 +51,8 @@ const countCities = async (UF) => {
   let fileExists = await exists(`./files/${UF}.json`);
 
   if (fileExists) {
-    console.log(`./files/${UF}.json`);
-    const cities = JSON.parse(await readFile(`./files/${UF}.json`, 'utf8'));
-
-    console.log(cities);
+    const data = readFileSync(`./files/${UF}.json`);
+    const cities = JSON.parse(data);
   }
 };
 
