@@ -2,7 +2,6 @@ const { promisify } = require('util');
 const fs = require('fs');
 const mkdir = promisify(fs.mkdir);
 const exists = promisify(fs.exists);
-const appendFile = promisify(fs.appendFile);
 const writeFile = promisify(fs.writeFile);
 const readFile = promisify(fs.readFile);
 const readFileSync = promisify(fs.readFileSync);
@@ -27,20 +26,18 @@ const createFiles = async () => {
         );
 
         states.map(async (state) => {
-          await writeFile(`./files/${state.Sigla}.json`, '').then(async () => {
-            let array = [];
+          let array = [];
 
-            cities.map((city) => {
-              if (city.Estado === state.ID) {
-                array.push(city);
-              }
-            });
-
-            await appendFile(
-              `./files/${state.Sigla}.json`,
-              JSON.stringify(array, null, 2)
-            );
+          cities.map((city) => {
+            if (city.Estado === state.ID) {
+              array.push(city);
+            }
           });
+
+          writeFile(
+            `./files/${state.Sigla}.json`,
+            JSON.stringify(array, null, 2)
+          );
         });
       }
     });
@@ -53,6 +50,7 @@ const countCities = async (UF) => {
   if (fileExists) {
     const data = readFileSync(`./files/${UF}.json`);
     const cities = JSON.parse(data);
+    console.log(cities);
   }
 };
 
