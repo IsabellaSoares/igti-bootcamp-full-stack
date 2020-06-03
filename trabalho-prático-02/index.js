@@ -2,12 +2,18 @@ const { promisify } = require('util');
 const fs = require('fs');
 const mkdir = promisify(fs.mkdir);
 const exists = promisify(fs.exists);
+const readFileSync = promisify(fs.readFileSync);
 const writeFile = promisify(fs.writeFile);
 const readFile = promisify(fs.readFile);
 
+let statesArray = [];
+
 async function main() {
   await createFiles();
-  await countCities('MG');
+  // await countCities('MG');
+  orderCities(statesArray);
+  largestCitiesNumber();
+  smallestCitiesNumber();
 }
 
 const createFiles = async () => {
@@ -33,6 +39,11 @@ const createFiles = async () => {
             }
           });
 
+          statesArray.push({
+            UF: state.Sigla,
+            number_of_cities: array.length,
+          });
+
           writeFile(
             `./files/${state.Sigla}.json`,
             JSON.stringify(array, null, 2)
@@ -47,10 +58,49 @@ const countCities = async (UF) => {
   let fileExists = await exists(`./files/${UF}.json`);
 
   if (fileExists) {
-    const data = fs.readFileSync(`./files/${UF}.json`);
+    const data = readFileSync(`./files/${UF}.json`);
     const cities = JSON.parse(data);
-    console.log(cities);
+    return cities.length;
   }
+};
+
+const orderCities = (array) => {
+  array.sort((a, b) => {
+    let comparison = 0;
+    if (a.number_of_cities < b.number_of_cities) {
+      comparison = 1;
+    } else if (a.number_of_cities > b.number_of_cities) {
+      comparison = -1;
+    }
+
+    return comparison;
+  });
+
+  return array;
+};
+
+const largestCitiesNumber = () => {
+  let result = [];
+
+  for (let i = 0; i < 5; i++) {
+    result.push(`${statesArray[i].UF} - ${statesArray[i].number_of_cities}`);
+  }
+
+  console.log('Estados com o maior número de cidades >> ', result);
+};
+
+const smallestCitiesNumber = () => {
+  let result = [];
+  let count = statesArray.length - 6;
+
+  while (count < statesArray.length) {
+    result.push(
+      `${statesArray[count].UF} - ${statesArray[count].number_of_cities}`
+    );
+    count++;
+  }
+
+  console.log('Estados com o menor número de cidades >> ', result);
 };
 
 main();
