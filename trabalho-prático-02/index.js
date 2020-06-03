@@ -4,7 +4,6 @@ const mkdir = promisify(fs.mkdir);
 const exists = promisify(fs.exists);
 const writeFile = promisify(fs.writeFile);
 const readFile = promisify(fs.readFile);
-const readFileSync = promisify(fs.readFileSync);
 
 async function main() {
   await createFiles();
@@ -48,7 +47,7 @@ const countCities = async (UF) => {
   let fileExists = await exists(`./files/${UF}.json`);
 
   if (fileExists) {
-    const data = readFileSync(`./files/${UF}.json`);
+    const data = fs.readFileSync(`./files/${UF}.json`);
     const cities = JSON.parse(data);
     console.log(cities);
   }
