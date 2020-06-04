@@ -4,11 +4,12 @@ let statesArray = [];
 
 function main() {
   createFiles();
-  countCities('MG');
+  // countCities('MG');
   orderCities(statesArray);
   largestCitiesNumber();
   smallestCitiesNumber();
   largestCitiesNames();
+  smallestCitiesNames();
 }
 
 const createFiles = () => {
@@ -105,9 +106,31 @@ const smallestCitiesNumber = () => {
 const findLargestCityName = (cities) => {
   let name = '';
 
-  cities.forEach((city) =>
-    city.Nome.length > name.length ? (name = city.Nome) : ''
-  );
+  cities.forEach((city) => {
+    if (city.Nome.length > name.length) {
+      name = city.Nome;
+    } else if (city.Nome.length === name.length) {
+      if (city.Nome > name) {
+        name = city.Nome;
+      }
+    }
+  });
+
+  return name;
+};
+
+const findSmallestCityName = (cities) => {
+  let name = '';
+
+  cities.forEach((city) => {
+    if (city.Nome.length < name.length || name === '') {
+      name = city.Nome;
+    } else if (city.Nome.length === name.length) {
+      if (city.Nome < name) {
+        name = city.Nome;
+      }
+    }
+  });
 
   return name;
 };
@@ -120,7 +143,18 @@ const largestCitiesNames = () => {
     result.push(`${findLargestCityName(cities)} - ${state.UF}`);
   });
 
-  console.log(result);
+  console.log('Cidades com maiores nomes >> ', result);
+};
+
+const smallestCitiesNames = () => {
+  let result = [];
+
+  statesArray.forEach((state) => {
+    const cities = readStateFile(state.UF);
+    result.push(`${findSmallestCityName(cities)} - ${state.UF}`);
+  });
+
+  console.log('Cidades com menores nomes >> ', result);
 };
 
 main();
