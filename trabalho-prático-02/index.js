@@ -87,28 +87,49 @@ const orderCities = (array) => {
   return array;
 };
 
+const orderStates = (array) => {
+  array.sort((a, b) => {
+    let comparison = 0;
+    if (a.UF > b.UF) {
+      comparison = 1;
+    } else if (a.UF < b.UF) {
+      comparison = -1;
+    }
+
+    return comparison;
+  });
+
+  return array;
+};
+
 const largestCitiesNumber = () => {
   let result = [];
+  let sum = 0;
 
   for (let i = 0; i < 5; i++) {
     result.push(`${statesArray[i].UF} - ${statesArray[i].number_of_cities}`);
+    sum += statesArray[i].number_of_cities;
   }
 
   console.log('Estados com o maior número de cidades >> ', result);
+  console.log('Soma das cidades (maior) >> ', sum);
 };
 
 const smallestCitiesNumber = () => {
   let result = [];
-  let count = statesArray.length - 6;
+  let count = statesArray.length - 5;
+  let sum = 0;
 
   while (count < statesArray.length) {
     result.push(
       `${statesArray[count].UF} - ${statesArray[count].number_of_cities}`
     );
+    sum += statesArray[count].number_of_cities;
     count++;
   }
 
   console.log('Estados com o menor número de cidades >> ', result);
+  console.log('Soma das cidades (menor) >> ', sum);
 };
 
 const findLargestCityName = (cities) => {
@@ -118,7 +139,7 @@ const findLargestCityName = (cities) => {
     if (city.length > name.length) {
       name = city;
     } else if (city.length === name.length) {
-      if (city > name) {
+      if (city < name) {
         name = city;
       }
     }
@@ -146,7 +167,7 @@ const findSmallestCityName = (cities) => {
 const largestCitiesNames = () => {
   let result = [];
 
-  statesArray.forEach((state) => {
+  orderStates(statesArray).forEach((state) => {
     const data = readStateFile(state.UF);
     const cities = data.map((item) => item.Nome);
     result.push(`${findLargestCityName(cities)} - ${state.UF}`);
