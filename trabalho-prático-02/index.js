@@ -1,67 +1,66 @@
-const { promisify } = require('util');
 const fs = require('fs');
-const mkdir = promisify(fs.mkdir);
-const exists = promisify(fs.exists);
-const readFileSync = promisify(fs.readFileSync);
-const writeFile = promisify(fs.writeFile);
-const readFile = promisify(fs.readFile);
 
 let statesArray = [];
 
-async function main() {
-  await createFiles();
-  // await countCities('MG');
+function main() {
+  createFiles();
+  countCities('MG');
   orderCities(statesArray);
   largestCitiesNumber();
   smallestCitiesNumber();
+  largestCitiesNames();
 }
 
-const createFiles = async () => {
-  let fileExists = await exists('./mocks/Estados.json');
+const createFiles = () => {
+  let fileExists = fs.existsSync('./mocks/Estados.json');
 
   if (fileExists) {
-    const states = JSON.parse(await readFile('./mocks/Estados.json', 'utf8'));
+    const states = JSON.parse(fs.readFileSync('./mocks/Estados.json', 'utf8'));
 
-    await mkdir('./files', { recursive: true }).then(async () => {
-      fileExists = await exists('./mocks/Cidades.json');
+    fs.mkdirSync('./files', { recursive: true });
+    fileExists = fs.existsSync('./mocks/Cidades.json');
 
-      if (fileExists) {
-        const cities = JSON.parse(
-          await readFile('./mocks/Cidades.json', 'utf8')
-        );
+    if (fileExists) {
+      const cities = JSON.parse(
+        fs.readFileSync('./mocks/Cidades.json', 'utf8')
+      );
 
-        states.map(async (state) => {
-          let array = [];
+      states.map((state) => {
+        let array = [];
 
-          cities.map((city) => {
-            if (city.Estado === state.ID) {
-              array.push(city);
-            }
-          });
-
-          statesArray.push({
-            UF: state.Sigla,
-            number_of_cities: array.length,
-          });
-
-          writeFile(
-            `./files/${state.Sigla}.json`,
-            JSON.stringify(array, null, 2)
-          );
+        cities.map((city) => {
+          if (city.Estado === state.ID) {
+            array.push(city);
+          }
         });
-      }
-    });
+
+        statesArray.push({
+          UF: state.Sigla,
+          number_of_cities: array.length,
+        });
+
+        fs.writeFileSync(
+          `./files/${state.Sigla}.json`,
+          JSON.stringify(array, null, 2)
+        );
+      });
+    }
   }
 };
 
-const countCities = async (UF) => {
-  let fileExists = await exists(`./files/${UF}.json`);
+const readStateFile = (UF) => {
+  let fileExists = fs.existsSync(`./files/${UF}.json`);
 
   if (fileExists) {
-    const data = readFileSync(`./files/${UF}.json`);
+    const data = fs.readFileSync(`./files/${UF}.json`);
     const cities = JSON.parse(data);
-    return cities.length;
+    return cities;
   }
+};
+
+const countCities = (UF) => {
+  const cities = readStateFile(UF);
+  return cities.length;
 };
 
 const orderCities = (array) => {
@@ -101,6 +100,27 @@ const smallestCitiesNumber = () => {
   }
 
   console.log('Estados com o menor número de cidades >> ', result);
+};
+
+const findLargestCityName = (cities) => {
+  let name = '';
+
+  cities.forEach((city) =>
+    city.Nome.length > name.length ? (name = city.Nome) : ''
+  );
+
+  return name;
+};
+
+const largestCitiesNames = () => {
+  let result = [];
+
+  statesArray.forEach((state) => {
+    const cities = readStateFile(state.UF);
+    result.push(`${findLargestCityName(cities)} - ${state.UF}`);
+  });
+
+  console.log(result);
 };
 
 main();
