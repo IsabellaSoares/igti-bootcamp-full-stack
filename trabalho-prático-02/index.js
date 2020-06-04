@@ -8,8 +8,16 @@ function main() {
   orderCities(statesArray);
   largestCitiesNumber();
   smallestCitiesNumber();
-  largestCitiesNames();
-  smallestCitiesNames();
+  console.log('Cidades com maiores nomes >> ', largestCitiesNames());
+  console.log('Cidades com menores nomes >> ', smallestCitiesNames());
+  console.log(
+    'Cidade com maior nome dentre todos os estados >> ',
+    findLargestCityName(largestCitiesNames())
+  );
+  console.log(
+    'Cidade com menor nome dentre todos os estados >> ',
+    findSmallestCityName(smallestCitiesNames())
+  );
 }
 
 const createFiles = () => {
@@ -107,11 +115,11 @@ const findLargestCityName = (cities) => {
   let name = '';
 
   cities.forEach((city) => {
-    if (city.Nome.length > name.length) {
-      name = city.Nome;
-    } else if (city.Nome.length === name.length) {
-      if (city.Nome > name) {
-        name = city.Nome;
+    if (city.length > name.length) {
+      name = city;
+    } else if (city.length === name.length) {
+      if (city > name) {
+        name = city;
       }
     }
   });
@@ -123,11 +131,11 @@ const findSmallestCityName = (cities) => {
   let name = '';
 
   cities.forEach((city) => {
-    if (city.Nome.length < name.length || name === '') {
-      name = city.Nome;
-    } else if (city.Nome.length === name.length) {
-      if (city.Nome < name) {
-        name = city.Nome;
+    if (city.length < name.length || name === '') {
+      name = city;
+    } else if (city.length === name.length) {
+      if (city < name) {
+        name = city;
       }
     }
   });
@@ -139,22 +147,24 @@ const largestCitiesNames = () => {
   let result = [];
 
   statesArray.forEach((state) => {
-    const cities = readStateFile(state.UF);
+    const data = readStateFile(state.UF);
+    const cities = data.map((item) => item.Nome);
     result.push(`${findLargestCityName(cities)} - ${state.UF}`);
   });
 
-  console.log('Cidades com maiores nomes >> ', result);
+  return result;
 };
 
 const smallestCitiesNames = () => {
   let result = [];
 
   statesArray.forEach((state) => {
-    const cities = readStateFile(state.UF);
+    const data = readStateFile(state.UF);
+    const cities = data.map((item) => item.Nome);
     result.push(`${findSmallestCityName(cities)} - ${state.UF}`);
   });
 
-  console.log('Cidades com menores nomes >> ', result);
+  return result;
 };
 
 main();
