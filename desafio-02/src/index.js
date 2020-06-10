@@ -5,8 +5,10 @@ const app = express();
 
 let data = {};
 
-if (fs.existsSync('src/grades.json')) {
-  data = JSON.parse(fs.readFileSync('src/grades.json', 'utf8'));
+const fileExists = fs.existsSync('src/mock/grades.json');
+
+if (fileExists) {
+  data = JSON.parse(fs.readFileSync('src/mock/grades.json', 'utf8'));
 }
 
 const order = (a, b) => {
@@ -45,7 +47,7 @@ app.post('/create-grade', (request, response) => {
 
   if (fileExists) {
     try {
-      fs.writeFileSync('src/grades.json', JSON.stringify(data, null, 2));
+      fs.writeFileSync('src/mock/grades.json', JSON.stringify(data, null, 2));
       response.status(200).send(newGrade);
     } catch (err) {
       response.status(500).send('Não foi possivel gravar no arquivo.');
@@ -69,7 +71,7 @@ app.put('/update-grade/:id', (request, response) => {
 
   if (fileExists) {
     try {
-      fs.writeFileSync('src/grades.json', JSON.stringify(data, null, 2));
+      fs.writeFileSync('src/mock/grades.json', JSON.stringify(data, null, 2));
       response.status(200).send('Grade atualizada com sucesso!');
     } catch (err) {
       response.status(500).send('Não foi possivel gravar no arquivo.');
@@ -85,7 +87,7 @@ app.delete('/delete-grade/:id', (request, response) => {
 
   if (fileExists) {
     try {
-      fs.writeFileSync('src/grades.json', JSON.stringify(data, null, 2));
+      fs.writeFileSync('src/mock/grades.json', JSON.stringify(data, null, 2));
       response.status(200).send('Grade excluída com sucesso!');
     } catch (err) {
       response.status(500).send('Não foi possivel gravar no arquivo.');
