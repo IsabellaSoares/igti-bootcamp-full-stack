@@ -48,6 +48,34 @@ router.post('/', (request, response) => {
   }
 });
 
+router.post('/transaction', (request, response) => {
+  let body = request.body;
+  let data = {};
+
+  try {
+    data = JSON.parse(fs.readFileSync(FILENAME, 'utf8'));
+
+    let index = data.accounts.findIndex(
+      (account) => account.id === Number(body.id)
+    );
+
+    if (index < 0) response.status(400).send('Account not found.');
+
+    if (body.value < 0 && data.accounts[index].balance + body.value < 0) {
+      throw new Error('Insufficient funds.');
+    }
+    data.accounts[index].balance += body.value;
+
+    fs.writeFileSync(FILENAME, JSON.stringify(data, null, 2), (err) =>
+      response.status(500).send({ error: err.message })
+    );
+
+    response.status(200).send('Transaction completed!');
+  } catch (err) {
+    response.status(500).send({ error: err.message });
+  }
+});
+
 router.delete('/:id', (request, response) => {
   let id = request.params.id;
 
