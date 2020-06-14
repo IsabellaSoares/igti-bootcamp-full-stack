@@ -22,8 +22,8 @@ router.get('/:id', (request, response) => {
     let account = data.accounts.find((account) => account.id === Number(id));
 
     if (!account) {
-      logger.error(`GET /account/:id - Account not found`);
-      response.status(400).send('Account not found.');
+      logger.error(`GET /account/:id - Account ID: ${id} not found`);
+      response.status(404).send(`Account ID: ${id} not found.`);
     }
 
     logger.info(`GET /account/:id - ${JSON.stringify(account)}`);
@@ -69,7 +69,7 @@ router.post('/transaction', (request, response) => {
 
     if (index < 0) {
       logger.error(`POST /account/transaction - Account not found`);
-      response.status(400).send(`Account ID: ${body.id} not found.`);
+      response.status(404).send(`Account ID: ${body.id} not found.`);
     }
 
     if (body.value < 0 && data.accounts[index].balance + body.value < 0) {
@@ -127,7 +127,7 @@ router.put('/', (request, response) => {
 
     if (index < 0) {
       logger.error(`PUT /account - Account ID: ${newAccount.id} not found`);
-      response.status(400).send('Account not found.');
+      response.status(404).send(`Account ID: ${newAccount.id} not found`);
     }
 
     data.accounts[index] = newAccount;
