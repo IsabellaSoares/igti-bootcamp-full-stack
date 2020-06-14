@@ -11,7 +11,8 @@ app.post('/account', (request, response) => {
   let body = request.body;
   let data = JSON.parse(fs.readFileSync('./json/accounts.json', 'utf8'));
 
-  data.accounts.push(body);
+  data.accounts.push({ id: data.nextId, ...body });
+  data.nextId++;
 
   try {
     fs.writeFileSync(
