@@ -68,4 +68,28 @@ router.delete('/:id', (request, response) => {
   }
 });
 
+router.put('/', (request, response) => {
+  let newAccount = request.body;
+
+  try {
+    let data = JSON.parse(fs.readFileSync(FILENAME, 'utf8'));
+
+    let index = data.accounts.findIndex(
+      (account) => account.id === Number(newAccount.id)
+    );
+
+    if (index < 0) response.status(400).send('Account not found.');
+
+    data.accounts[index] = newAccount;
+
+    fs.writeFileSync(FILENAME, JSON.stringify(data, null, 2), (err) =>
+      response.status(500).send({ error: err.message })
+    );
+
+    response.status(200).send('Account updated!');
+  } catch (err) {
+    response.status(500).send({ error: err.message });
+  }
+});
+
 module.exports = router;
