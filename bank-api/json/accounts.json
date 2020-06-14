@@ -1,4 +1,9 @@
 {
-  "nextId": 1,
-  "accounts": []
+  "nextId": 2,
+  "accounts": [
+    {
+      "id": 1,
+      "name": 1
+    }
+  ]
 }
