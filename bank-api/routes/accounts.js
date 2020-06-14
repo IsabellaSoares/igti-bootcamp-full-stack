@@ -42,7 +42,27 @@ router.post('/', (request, response) => {
       response.status(500).send({ error: err.message })
     );
 
-    response.status(200).send('Success!');
+    response.status(200).send('Account created!');
+  } catch (err) {
+    response.status(500).send({ error: err.message });
+  }
+});
+
+router.delete('/:id', (request, response) => {
+  let id = request.params.id;
+
+  try {
+    let data = JSON.parse(fs.readFileSync(FILENAME, 'utf8'));
+
+    data.accounts = data.accounts.filter(
+      (account) => account.id !== Number(id)
+    );
+
+    fs.writeFileSync(FILENAME, JSON.stringify(data, null, 2), (err) =>
+      response.status(500).send({ error: err.message })
+    );
+
+    response.status(200).send('Account deleted!');
   } catch (err) {
     response.status(500).send({ error: err.message });
   }
