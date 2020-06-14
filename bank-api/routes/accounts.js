@@ -9,7 +9,23 @@ router.get('/', (request, response) => {
     let data = JSON.parse(fs.readFileSync(FILENAME, 'utf8'));
     response.status(200).send({ accounts: data.accounts });
   } catch (err) {
-    response.status(400).send({ error: err.message });
+    response.status(500).send({ error: err.message });
+  }
+});
+
+router.get('/:id', (request, response) => {
+  let id = request.params.id;
+
+  try {
+    let data = JSON.parse(fs.readFileSync(FILENAME, 'utf8'));
+
+    let account = data.accounts.find((account) => account.id === Number(id));
+
+    if (!account) response.status(400).send('Account not found.');
+
+    response.status(200).send(account);
+  } catch (err) {
+    response.status(500).send({ error: err.message });
   }
 });
 
@@ -23,12 +39,12 @@ router.post('/', (request, response) => {
     data.nextId++;
 
     fs.writeFileSync(FILENAME, JSON.stringify(data, null, 2), (err) =>
-      response.status(400).send({ error: err.message })
+      response.status(500).send({ error: err.message })
     );
 
     response.status(200).send('Success!');
   } catch (err) {
-    response.status(400).send({ error: err.message });
+    response.status(500).send({ error: err.message });
   }
 });
 

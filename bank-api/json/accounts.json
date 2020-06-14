@@ -1,8 +1,12 @@
 {
-  "nextId": 2,
+  "nextId": 3,
   "accounts": [
     {
       "id": 1,
+      "name": 1
+    },
+    {
+      "id": 2,
       "name": 1
     }
   ]
