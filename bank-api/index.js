@@ -13,13 +13,31 @@ app.post('/account', (request, response) => {
 
   data.accounts.push(body);
 
-  fs.writeFileSync(
-    './json/accounts.json',
-    JSON.stringify(data, null, 2),
-    (err) => response.status(500).send('Internal server error.')
-  );
+  try {
+    fs.writeFileSync(
+      './json/accounts.json',
+      JSON.stringify(data, null, 2),
+      (err) => response.status(500).send('Internal server error.')
+    );
 
-  response.status(200).send('Success!');
+    response.status(200).send('Success!');
+  } catch (err) {
+    response.status(500).send('Internal server error.');
+  }
 });
 
-app.listen(3000);
+app.listen(3000, () => {
+  let exists = fs.existsSync('./json/accounts.json');
+
+  if (!exists) {
+    let initialJson = {
+      nextId: 1,
+      accounts: [],
+    };
+
+    fs.writeFileSync(
+      './json/accounts.json',
+      JSON.stringify(initialJson, null, 2)
+    );
+  }
+});
