@@ -2,6 +2,8 @@ const fs = require('fs');
 const express = require('express');
 const accountRouter = require('./routes/accounts.js');
 const winston = require('winston');
+const swaggerUI = require('swagger-ui-express');
+const swaggerDocument = require('./doc.js');
 
 global.filename = './json/accounts.json';
 
@@ -25,6 +27,7 @@ const app = express();
 
 app.use(express.json());
 app.use('/account', accountRouter);
+app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 app.listen(3000, () => {
   try {
