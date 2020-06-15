@@ -4,6 +4,7 @@ const accountRouter = require('./routes/accounts.js');
 const winston = require('winston');
 const swaggerUI = require('swagger-ui-express');
 const swaggerDocument = require('./doc.js');
+const cors = require('cors');
 
 global.filename = './json/accounts.json';
 
@@ -26,6 +27,7 @@ global.logger = winston.createLogger({
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 app.use('/account', accountRouter);
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
