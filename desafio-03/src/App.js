@@ -1,5 +1,5 @@
 import React from 'react';
-import ProjetoBase from './components/ProjetoBase/ProjetoBase';
+import ProjetoBase from './components/ProjetoBase';
 
 const App = () => <ProjetoBase />;
 
