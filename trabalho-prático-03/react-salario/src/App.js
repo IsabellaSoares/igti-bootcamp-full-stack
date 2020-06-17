@@ -118,8 +118,9 @@ const App = () => {
           margin: 'auto',
         }}
       >
-        <Bar value="10" color="red" />
-        <Bar value="90" color="green" />
+        <Bar value={percentage(values.discountINSS)} color="#e67e22" />
+        <Bar value={percentage(values.discountIRPF)} color="#c0392b" />
+        <Bar value={percentage(values.netSalary)} color="#16a085" />
       </div>
     </>
   );
