@@ -3,7 +3,10 @@ const formatter = new Intl.NumberFormat('pt-BR', {
   currency: 'BRL',
 });
 
-const percentage = (salary, value) =>
-  salary !== '' ? ((value * 100) / salary).toFixed(2) : 0;
+const percentage = (initialValue, monthlyInterest) =>
+  initialValue !== '' ? ((initialValue * monthlyInterest) / 100).toFixed(2) : 0;
 
-export { formatter, percentage };
+const formatPercentage = (percentage) =>
+  percentage !== '' ? `${Number(percentage).toFixed(2)}%` : '';
+
+export { formatter, percentage, formatPercentage };
