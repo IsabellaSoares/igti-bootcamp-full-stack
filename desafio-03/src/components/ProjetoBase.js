@@ -18,7 +18,7 @@ const ProjetoBase = () => {
       </div>
 
       <Form values={values} setValues={setValues} />
-      <Installments values={values} setValues={setValues} />
+      <Installments values={values} />
     </>
   );
 };
