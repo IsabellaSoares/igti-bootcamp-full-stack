@@ -87,8 +87,9 @@ const remove = async (req, res) => {
   const id = req.params.id;
 
   try {
-    res.send({ message: 'Grade excluido com sucesso' });
+    await Grades.findOneAndDelete({ _id: id });
 
+    res.send({ message: 'Grade excluido com sucesso' });
     logger.info(`DELETE /grade - ${id}`);
   } catch (error) {
     res
@@ -102,6 +103,8 @@ const removeAll = async (req, res) => {
   const id = req.params.id;
 
   try {
+    await Grades.findByIdAndDelete(id);
+
     res.send({
       message: `Grades excluidos`,
     });
