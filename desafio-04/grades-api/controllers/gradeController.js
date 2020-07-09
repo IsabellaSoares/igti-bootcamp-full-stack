@@ -70,8 +70,12 @@ const update = async (req, res) => {
   const id = req.params.id;
 
   try {
-    res.send({ message: 'Grade atualizado com sucesso' });
+    await Grades.updateOne(
+      { _id: id },
+      { ...req.body, lastModified: new Date() }
+    );
 
+    res.send({ message: 'Grade atualizado com sucesso' });
     logger.info(`PUT /grade - ${id} - ${JSON.stringify(req.body)}`);
   } catch (error) {
     res.status(500).send({ message: 'Erro ao atualizar a Grade id: ' + id });
