@@ -14,7 +14,7 @@ const create = async (req, res) => {
     const body = req.body;
     const new_grade = new Grades({ ...body, lastModified: new Date() });
 
-    new_grade.save(function (err, book) {
+    await new_grade.save(function (err) {
       if (err) return console.error(err);
       res.send(`POST /grade - ${JSON.stringify(new_grade)}`);
       logger.info(`POST /grade - ${JSON.stringify(new_grade)}`);
@@ -50,8 +50,9 @@ const findOne = async (req, res) => {
   const id = req.params.id;
 
   try {
-    res.send();
+    const grade = await Grades.findById(id);
 
+    res.send(`GET /grade/${id} - ${JSON.stringify(grade)}`);
     logger.info(`GET /grade - ${id}`);
   } catch (error) {
     res.status(500).send({ message: 'Erro ao buscar o Grade id: ' + id });
