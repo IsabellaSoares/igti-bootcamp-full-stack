@@ -36,7 +36,9 @@ const findAll = async (req, res) => {
     : {};
 
   try {
-    res.send();
+    const grades = await Grades.find(condition);
+
+    res.send(JSON.stringify(grades));
     logger.info(`GET /grade`);
   } catch (error) {
     res
@@ -51,6 +53,11 @@ const findOne = async (req, res) => {
 
   try {
     const grade = await Grades.findById(id);
+
+    if (!grade) {
+      res.send(`GET /grade/${id} - Não encontrado`);
+      logger.info(`GET /grade - ${id} - Não encontrado`);
+    }
 
     res.send(`GET /grade/${id} - ${JSON.stringify(grade)}`);
     logger.info(`GET /grade - ${id}`);
